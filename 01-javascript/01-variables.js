@@ -153,6 +153,7 @@ console.log(ageVicente);
 /*
 * Reference variables JS List
 * Object
+* Arrays
 * */
 
 let rafael = {
