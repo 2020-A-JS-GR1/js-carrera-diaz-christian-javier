@@ -96,4 +96,84 @@ const arrayNumber = []; //object
 console.log(_javier);
 console.log(arrayNumber);
 console.log(_javier.pets);
-console.log(_javier.clothes);
+console.log(_javier.clothes.color);
+
+//Access properties of object
+// First syntaxys
+_javier.name;
+_javier.clothes;
+// Second syntaxis
+_javier["nombre"]
+
+// Display object
+// _javier is inmutable variable but its property can change
+/*
+* What happend when the propertie not exist?
+* you get undefined
+* */
+
+console.log(_javier);
+_javier.name = "Christian";
+console.log(_javier);
+_javier["name"] = "Javier";
+console.log(_javier.salary); //undefined
+_javier.salary = 1.2;
+console.log(_javier.salary); //1.2
+_javier["expenses"] = 0.8;
+console.log(_javier["expenses"]); //0.8
+_javier["expenses"] = undefined;
+console.log(_javier); //undefined
+delete _javier.expenses
+console.log(_javier); //undefined
+
+// Object "class"
+
+console.log(Object.keys(_javier)); //all key of a object "_javier"
+console.log("Lao"+Object.keys(_javier).fill(null,0, 2)); //all key of a object "_javier"
+
+/*
+* Reference values and by value
+*
+* JS Values List
+* number
+* string
+* boolean
+* undefined
+* These are value variables
+* */
+
+let ageChristian = 31;
+let ageVicente = ageChristian;
+console.log(ageChristian);
+console.log(ageVicente);
+ageChristian +=1;
+console.log(ageChristian);
+console.log(ageVicente);
+
+/*
+* Reference variables JS List
+* Object
+* */
+
+let rafael = {
+    name : "Rafael"
+};
+let lenin = rafael;
+lenin.name = "Lenin";
+console.log(rafael);
+console.log(lenin);
+
+delete rafael.name;
+console.log(rafael);
+console.log(lenin);
+
+let rafael = {
+    name : "Rafael"
+};
+let lenin = Object.assign({},rafael);
+console.log(rafael);
+console.log(lenin);
+lenin.name = "Lenin";
+delete rafael.name;
+console.log(rafael);
+console.log(lenin);
