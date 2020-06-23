@@ -137,3 +137,50 @@ const answerFilter = array.filter(
 );
 console.log("array", array);
 console.log("answerFilter", answerFilter);
+// There are some grades less than 9
+// OR
+//some -> expression
+const asnwerSome = array
+    .some(
+        (currentValue, currentIndex, allArray) =>{
+            return currentValue.grade < 9;
+        }
+    );
+
+console.log("answerSome", asnwerSome);
+
+// There are some grades less than 9
+// AND
+//EVERY -> expression
+const asnwerAny = array
+    .every(
+        (currentValue, currentIndex, allArray) =>{
+            return currentValue.grade > 14;
+        }
+    );
+console.log("answerAny", asnwerAny);
+
+// reduce -> expression
+// reduceRight -> right - left
+// reduce -> left - right
+
+const answerReduce = array
+    .reduce(
+        (Accumulator , currentValue ) =>{
+            return  Accumulator - currentValue.grade;
+        },
+        500 // Accumulator
+    );
+console.log("answerReduce", answerReduce);
+
+// Exercise
+
+const answer = array
+.map((v)=>v.grade * 1.3) // add 30%
+.filter((nota) =>nota<9)
+
+const anwerReduceNew = answer
+    .reduce((accumulator, current) => accumulator + current,0);
+
+const gradeAverage = answerReduce / answer.length;
+console.log("gradeAverage", gradeAverage);

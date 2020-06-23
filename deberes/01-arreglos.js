@@ -88,3 +88,5 @@ const arrayMap = arreglo.map(
 
 console.log("Array Original", arreglo);
 console.log("Array de estudiantes aprobados: ", arrayMap);
+
+
