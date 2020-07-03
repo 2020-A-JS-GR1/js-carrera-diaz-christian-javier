@@ -37,3 +37,4 @@ promiseIsEven(2)
             console.log('Content catch', error);
         }
     )
+
