@@ -131,7 +131,11 @@ async function usersManagement() {
                         let answers = data;
                         let newUser = await createUser()
                         try {
-                            newUser["computers"] = JSON.parse(newUser["computers"])
+                            let i=0;
+                            for(let computer of newUser["computers"]) {
+                                newUser["computers"][i] = JSON.parse(computer)
+                                i++;
+                            }
                             answers.push(newUser);
                             return answers;
                         } catch (e) {
@@ -285,7 +289,7 @@ async function createUser() {
                             /^[0-9]\d+/g
                         );
                         if (pass) return true;
-                        return 'Please insert a correct computer\'s price'
+                        return 'Please insert a correct user\'s age'
                     }
                 },
                 {
@@ -329,7 +333,7 @@ async function updateOrDeleteComputer(option) {
                     console.log("[" + data.indexOf(object) + "] -->" + JSON.stringify(object));
                 try {
                     let updated = readline.question("\nChoose any one!!\n");
-                    if (Number.parseInt(updated)) {
+                    if (Number.parseInt(updated) || Number.parseInt(updated)===0) {
                         data.splice(Number.parseInt(updated) === 0 ? 0 : (Number.parseInt(updated)), Number.parseInt(updated));
                         if (option === "u")
                             data[Number.parseInt(updated)] = await createComputer();
@@ -356,12 +360,16 @@ async function updateOrDeleteUsers(option) {
                     console.log("[" + data.indexOf(object) + "] -->" + JSON.stringify(object));
                 try {
                     let updated = readline.question("\nChoose any one!!\n");
-                    if (Number.parseInt(updated)) {
+                    if (Number.parseInt(updated) || Number.parseInt(updated)===0) {
                         data.splice(Number.parseInt(updated) === 0 ? 0 : (Number.parseInt(updated)), Number.parseInt(updated));
                         if (option === "u") {
                             let updateUser = await createUser();
                             try {
-                                updateUser["computers"] = JSON.parse(updateUser["computers"])
+                                let i=0;
+                                for(let computer of updateUser["computers"]){
+                                    updateUser["computers"][i] = JSON.parse(computer)
+                                    i++;
+                                }
                                 data[Number.parseInt(updated)] = updateUser;
                             } catch (e) {
                                 data[Number.parseInt(updated)] = updateUser;
