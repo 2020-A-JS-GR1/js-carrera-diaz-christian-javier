@@ -255,7 +255,6 @@ async function createUser() {
         let listcomputers = []
         for (let computer of list)
             listcomputers.push(JSON.stringify(computer));
-        console.log("listcomputers", listcomputers)
         const user = await inquirer
             .prompt([
                 {
