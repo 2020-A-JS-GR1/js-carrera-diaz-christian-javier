@@ -1,5 +1,24 @@
 /* Declare of libraries
-* It's necessary to install readline-sync  */
+* **********************************************OJO*****************************************************
+*                                   It's necessary to install readline-sync  */
+// User Object
+/*let user ={
+    DNI: '',
+    name: '',
+    last_name:'',
+    age: 0,
+    isMarried: false,
+    computers: []
+};*/
+
+/*let computer={
+    id : 0,
+    model: '',
+    brand: '',
+    price:'',
+    isNew:false,
+};*/
+
 
 const inquirer = require('inquirer');
 const fs = require('fs');
@@ -392,23 +411,6 @@ async function updateOrDeleteUsers(option) {
 
 mainMenu();
 
-// User Object
-/*let user ={
-    DNI: '',
-    name: '',
-    last_name:'',
-    age: 0,
-    isMarried: false,
-    computers: []
-};*/
-
-/*let computer={
-    id : 0,
-    model: '',
-    brand: '',
-    price:'',
-    isNew:false,
-};*/
 
 
 function promiseWrite(path, newContent) {
@@ -435,30 +437,3 @@ function promiseLecture(path) {
     );
     return LecturePromise;
 }
-
-function ejercicio(path, newContent) {
-    promiseLecture(path)
-        .then(
-            (data) => {
-                console.log(data);
-                return promiseWrite(path, data + newContent + "\n");
-            }
-        )
-        .then(
-            () => {
-                return promiseLecture(path);
-            }
-        )
-        .then(
-            (data) => {
-                console.log(data);
-            }
-        )
-        .catch(
-            (error) => {
-                console.log('Content catch', error);
-            }
-        )
-}
-
-
