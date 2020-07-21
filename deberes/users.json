@@ -1,4 +1,1 @@
-[
-    {"id":"01","model":"SLAS","brand":"SK","price":122.1,"isNew":true},
-    {"id":"01","model":"SLAS","brand":"SK","price":122.1,"isNew":true}
-]
+[{"DNI":"12321312312312","name":"sdasdsa","last_name":"sdas","age":"121","isMarried":"true","computers":["{\"id\":\"04\",\"model\":\"slds\",\"brand\":\"dsal\",\"price\":\"1231\",\"isNew\":\"true\"}","{\"id\":\"12213213123123\",\"model\":\"sdsda\",\"brand\":\"sas\",\"price\":\"12312\",\"isNew\":\"true\"}"]},{"DNI":"21312321232","name":"asdsad","last_name":"12sadsa","age":"2112","isMarried":"true","computers":{"id":"04","model":"slds","brand":"dsal","price":"1231","isNew":"true"}}]

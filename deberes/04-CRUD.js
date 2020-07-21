@@ -6,18 +6,26 @@ const fs = require('fs');
 const readline = require('readline-sync')
 /* ***************************************Global variables********************************* */
 // Address
-let path = './users.json';
+let pathUsers = './users.json';
+let pathComputers = './computers.json';
+
 // Users
-function connectToUser(){
-    let users = promiseLecture(path).then((data) => {
-        return Array.from(JSON.parse(data)["users"])
+function connectToUser() {
+    let users = promiseLecture(pathUsers).then((data) => {
+        let empty = []
+        if (data.toString() === "")
+            return empty
+        return Array.from(JSON.parse(data))
     });
     return users;
 }
+
 //Computer
 function connectToComputer() {
-    let computers = promiseLecture(path).then((data) => {
-        console.log("computers",data)
+    let computers = promiseLecture(pathComputers).then((data) => {
+        let empty = []
+        if (data.toString() === "")
+            return empty;
         return Array.from(JSON.parse(data))
     });
     return computers;
@@ -58,8 +66,7 @@ async function computerManagement() {
             "\n-> Choose any option for exit write \"e\"\n");
         switch (option) {
             case "1":
-               await connectToComputer().
-                then(
+                await connectToComputer().then(
                     async (data) => {
                         try {
                             let answers = data;
@@ -70,18 +77,20 @@ async function computerManagement() {
                         }
                     }
                 ).then(
-                    async (data) =>{
-                        console.log("New data saved successful!! \n",data);
-                        return promiseWrite(path, data);
+                    async (data) => {
+                        return promiseWrite(pathComputers, JSON.stringify(data));
                     }
                 ).catch(
-                    (err)=>{console.log("Error, please check ", err)}
+                    (err) => {
+                        console.log("Error, please check ", err)
+                    }
                 )
                 break;
             case "2":
-                await connectToComputer().
-                then((data) => {
-                    console.log(data);
+                await connectToComputer().then((data) => {
+                    console.log("All computers in database:\n");
+                    for (let object of data)
+                        console.log("[" + data.indexOf(object) + "] -->" + JSON.stringify(object));
                 }).catch(
                     (err) => {
                         console.log("Error " + err)
@@ -89,10 +98,12 @@ async function computerManagement() {
                 );
                 break;
             case "3":
-                await updateComputer();
+                await updateOrDeleteComputer("u");
+                console.log("The data was updated successful!! \n");
                 break;
             case "4":
-                console.log('Delete')
+                await updateOrDeleteComputer("d");
+                console.log("The data was deleted successful!! \n");
                 break;
             case "e":
                 console.log(`Thank you for using our service`);
@@ -104,36 +115,67 @@ async function computerManagement() {
     } while (option !== "e");
 }
 
-function usersManagement() {
+async function usersManagement() {
     let option;
     do {
         console.log("\n**************Users Management**************");
-        option = readline.question(
-            "\n[1] Create a new user" +
+        option = readline.question("\n[1] Create a new user" +
             "\n[2] Read all users" +
             "\n[3] Update an user" +
             "\n[4] Delete an user" +
-            "\n-> Choose any option for exit write \"e\"\n")
+            "\n-> Choose any option for exit write \"e\"\n");
         switch (option) {
             case "1":
-                console.log('Create')
+                await connectToUser().then(
+                    async (data) => {
+                        let answers = data;
+                        let newUser = await createUser()
+                        try {
+                            newUser["computers"] = JSON.parse(newUser["computers"])
+                            answers.push(newUser);
+                            return answers;
+                        } catch (e) {
+                            answers.push(newUser);
+                            return answers;
+                        }
+                    }
+                ).then(
+                    async (data) => {
+                        return promiseWrite(pathUsers, JSON.stringify(data));
+                    }
+                ).catch(
+                    (err) => {
+                        console.log("Error, please check ", err)
+                    }
+                )
                 break;
             case "2":
-                console.log('Read')
+                await connectToUser().then((data) => {
+                    console.log("All users in database:\n");
+                    for (let object of data)
+                        console.log("[" + data.indexOf(object) + "] -->" + JSON.stringify(object));
+                }).catch(
+                    (err) => {
+                        console.log("Error " + err)
+                    }
+                );
                 break;
             case "3":
-                console.log('Update')
+                await updateOrDeleteUsers("u");
+                console.log("The data was updated successful!! \n");
                 break;
             case "4":
-                console.log('Delete')
+                await updateOrDeleteUsers("d");
+                console.log("The data was deleted successful!! \n");
                 break;
             case "e":
                 console.log(`Thank you for using our service`);
                 break;
             default:
                 console.log("The option is incorrect, please try again!!");
+                break;
         }
-    } while (option !== 'e')
+    } while (option !== "e");
 }
 
 /* ********************************Create Users And Computers******************************* */
@@ -205,7 +247,12 @@ async function createComputer() {
 // Class User
 async function createUser() {
     try {
-        const user = inquirer
+        let list = await connectToComputer();
+        let listcomputers = []
+        for (let computer of list)
+            listcomputers.push(JSON.stringify(computer));
+        console.log("listcomputers", listcomputers)
+        const user = await inquirer
             .prompt([
                 {
                     type: 'input',
@@ -235,19 +282,38 @@ async function createUser() {
                     message: '(4)Input user\'s age:',
                     validate: function (value) {
                         let pass = value.match(
-                            /^[0-9]+.([0-9])\d+/g
+                            /^[0-9]\d+/g
                         );
                         if (pass) return true;
                         return 'Please insert a correct computer\'s price'
                     }
                 },
                 {
-                    type: 'input',
-                    name: 'description',
-                    message: '(5)Input computer\'s description:'
-                }
+                    type: 'list',
+                    name: 'isMarried',
+                    message: '(5)Are you married?',
+                    default: () => {
+                        return false
+                    },
+                    choices: ['true', 'false'],
+                    validate: (value) => {
+                        switch (value) {
+                            case 'true':
+                                return true;
+                            case 'false':
+                                return false
+                        }
+                    }
+                }, {
+                    type: 'checkbox',
+                    name: 'computers',
+                    message: '(6)What are yours computers?',
+                    choices: listcomputers,
+
+                },
             ]);
-        console.log('answer', user);
+        console.log('Have created a new user:\n', user);
+        return user;
     } catch (e) {
         console.log('Error', e);
 
@@ -255,21 +321,63 @@ async function createUser() {
 }
 
 /* ********************************Update Users And Computers******************************* */
-async function updateComputer() {
+async function updateOrDeleteComputer(option) {
     try {
-         computers = await computers.then(
+        await connectToComputer().then(
             async (data) => {
-                let objects = data;
                 for (let object of data)
-                    console.log("[" + objects.indexOf(object) + "] -->" + JSON.stringify(object));
+                    console.log("[" + data.indexOf(object) + "] -->" + JSON.stringify(object));
                 try {
                     let updated = readline.question("\nChoose any one!!\n");
                     if (Number.parseInt(updated)) {
-                        data[Number.parseInt(updated)]= await createComputer();
+                        data.splice(Number.parseInt(updated) === 0 ? 0 : (Number.parseInt(updated)), Number.parseInt(updated));
+                        if (option === "u")
+                            data[Number.parseInt(updated)] = await createComputer();
                     }
-                }catch (e){console.log("Error, please try again", e)}
+                } catch (e) {
+                    console.log("Error, please try again", e)
+                }
                 return data;
-            });
+            }).then(
+            async (data) => {
+                return promiseWrite(pathComputers, JSON.stringify(data));
+            }
+        );
+    } catch (e) {
+        console.log('Error', e);
+    }
+}
+
+async function updateOrDeleteUsers(option) {
+    try {
+        await connectToUser().then(
+            async (data) => {
+                for (let object of data)
+                    console.log("[" + data.indexOf(object) + "] -->" + JSON.stringify(object));
+                try {
+                    let updated = readline.question("\nChoose any one!!\n");
+                    if (Number.parseInt(updated)) {
+                        data.splice(Number.parseInt(updated) === 0 ? 0 : (Number.parseInt(updated)), Number.parseInt(updated));
+                        if (option === "u") {
+                            let updateUser = await createUser();
+                            try {
+                                updateUser["computers"] = JSON.parse(updateUser["computers"])
+                                data[Number.parseInt(updated)] = updateUser;
+                            } catch (e) {
+                                data[Number.parseInt(updated)] = updateUser;
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.log("Error, please try again", e)
+                }
+                return data;
+            }).then(
+            async (data) => {
+                console.log("The data was updated successful!! \n", data);
+                return promiseWrite(pathUsers, JSON.stringify(data));
+            }
+        );
     } catch (e) {
         console.log('Error', e);
     }
@@ -299,7 +407,7 @@ mainMenu();
 function promiseWrite(path, newContent) {
     const WritePromise = new Promise(
         (resolve, reject) => {
-            fs.appendFile(path, newContent, 'utf-8', (err) => {
+            fs.writeFile(path, newContent, 'utf-8', (err) => {
                 if (err) throw reject(err);
             });
         }
