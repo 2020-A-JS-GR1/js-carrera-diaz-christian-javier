@@ -13,12 +13,6 @@
  * https://sailsjs.com/config/datastores
  */
 
-
-let user = "christian";
-let password = "12345678";
-let port = "32777";
-let host = "localhost";
-let db = "js";
 module.exports.datastores = {
 
 
@@ -41,8 +35,7 @@ module.exports.datastores = {
   default: {
 
     adapter: 'sails-mysql',
-    //url: 'mysql://christian:12345678@localhost:32777/js',
-    url: 'mysql://'+user+':'+password+'@'+host+':'+port+'/'+db+'',
+    url: 'mysql://christian:12345678@localhost:32769/js',
 
   },
 

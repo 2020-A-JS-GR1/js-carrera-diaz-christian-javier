@@ -7,8 +7,6 @@
 
 module.exports = {
 
-  tableName: 'epn_usuario', //table name
-  datastore: 'default', //connection name
   attributes: {
     cedula:{ // nombre atributo
       type: 'string',
