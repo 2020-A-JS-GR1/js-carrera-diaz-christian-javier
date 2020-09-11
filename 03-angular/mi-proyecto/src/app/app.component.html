@@ -1,5 +1,23 @@
 <h1>Lista de Pelicula</h1>
-<app-carta-pelicula></app-carta-pelicula>
+
+<!--Colocando nuestros  componentes-->
+
+<!--Directiva -NGFOR - -->
+<!--Permite iterar más array--->
+<div *ngFor="let movie of mainArray">
+  <app-carta-pelicula
+    [urlImagen]="movie.url"
+    [description]="movie.description"
+    [buttonName]="movie.movieName"
+    (eventGetClickButton)="consoleMss($event)"
+    (eventGetClickImage)="consoleMss($event)">
+
+  </app-carta-pelicula>
+</div>
+<br>
+<!--Directiva -NGIF - -->
+<!--Permite mostrar un valor dependiendo de una condición--->
+<p *ngIf="true">OCULTO</p>
 <!--
 <p>P&aacute;rrafo</p>
 <ul>
