@@ -1,0 +1,23 @@
+<table>
+  <tr>
+    <th>ID</th>
+    <th>NOMBRE</th>
+    <th>CEDULA</th>
+    <th>ESTADOCIVIL</th>
+    <th>ACCIONES</th>
+  </tr>
+  <tr *ngFor="let user of usersArray">
+    <td>{{user.id}}</td>
+    <td>{{user.nombre}}</td>
+    <td>{{user.cedula}}</td>
+    <td>{{user.estadoCivil}}</td>
+    <td>
+      <button
+      (click)="irAEditarUsuario(user.id)">
+        Editar</button>
+      <button
+      (click)="eliminarUsuario(user.id)">
+        Eliminar</button>
+    </td>
+  </tr>
+</table>
