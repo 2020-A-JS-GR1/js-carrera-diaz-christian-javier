@@ -1,18 +1,21 @@
 <!--Property Binding -->
 <!--Set values to properties of a tag -->
 <img
-  [src]="urlExampleImg"
-  alt="">
+  [src]="urlImagen"
+  alt=""
+  (click)="executeImageGetClick()"
+  width="100px"
+  height="100px">
 <!--Interpolation -->
 <!--Only text shows in platform -->
 <p>{{exampleText}}</p>
 <a href="">
-  <p>{{linkExample}}</p>
+  <p>{{description}}</p>
 </a>
 <!--Event Binding -->
 <!--Communication between Html file to TS file -->
 <button
-  (click)="functionExample()"
+  (click)="executeEventGetClick()"
   (blur) ="onBlurEvent()">
-  {{exampleText}}
+  {{buttonName}}
 </button>

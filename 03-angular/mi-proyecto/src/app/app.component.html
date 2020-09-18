@@ -1,5 +1,64 @@
-<h1>Lista de Pelicula</h1>
-<app-carta-pelicula></app-carta-pelicula>
+<!--<h1>Lista de Pelicula</h1>
+
+&lt;!&ndash;Colocando nuestros  componentes&ndash;&gt;
+
+&lt;!&ndash;Directiva -NGFOR - &ndash;&gt;
+&lt;!&ndash;Permite iterar más array-&ndash;&gt;
+<div *ngFor="let movie of mainArray">
+  <app-carta-pelicula
+    [urlImagen]="movie.url"
+    [description]="movie.description"
+    [buttonName]="movie.movieName"
+    (eventGetClickButton)="consoleMss($event)"
+    (eventGetClickImage)="consoleMss($event)">
+
+  </app-carta-pelicula>
+</div>
+<br>
+&lt;!&ndash;Directiva -NGIF - &ndash;&gt;
+&lt;!&ndash;Permite mostrar un valor dependiendo de una condición-&ndash;&gt;
+<p *ngIf="true">OCULTO</p>
+
+<button (click)="createUser()">
+  Crear Usuario
+</button>-->
+
+<!--
+<button (click)="able=!able">
+  {{able ? 'Habilitado': 'Desabilitado'}}
+</button>
+<app-carta-pelicula *ngIf="able">
+
+</app-carta-pelicula>
+-->
+
+<!--
+<div *ngFor="let user of usersArray">
+  {{user.nombre}}
+</div>
+-->
+
+<ul>
+  <li>
+    <a [routerLink]="['home']">
+      Ir Inicio
+    </a>
+  </li>
+  <li>
+    <a [routerLink]="['login']">
+      Ir Login
+    </a>
+  </li>
+  <li>
+    <a [routerLink]="['user']">
+      Usuarios
+    </a>
+  </li>
+</ul>
+<router-outlet>
+
+</router-outlet>
+
 <!--
 <p>P&aacute;rrafo</p>
 <ul>
