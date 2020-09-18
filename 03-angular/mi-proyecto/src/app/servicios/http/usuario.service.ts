@@ -16,4 +16,13 @@ export class UsuarioService{
   traerTodo(){
     return this._httpClient.get(this.url+'/Usuario');
   }
+
+  //POST /Usuario
+  crear(user){
+    return this._httpClient.post(
+      this.url + '/Usuario', //URL
+      user
+    );
+  }
+
 }

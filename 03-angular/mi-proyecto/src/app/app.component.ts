@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UsuarioService} from "./servicios/http/usuario.service";
 
 @Component({
@@ -6,9 +6,10 @@ import {UsuarioService} from "./servicios/http/usuario.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent
+  implements OnInit{
   title = 'mi-proyecto';
-
+   able = true;
   mainArray = [
     {
       id: 1,
@@ -27,29 +28,57 @@ export class AppComponent {
       movieName: "Black Panther"
     }
   ];
+  usersArray = []
   numberArray = [1, 2, 3];
+  obsArray = []
 
   //Inyectar Dependencias
   constructor(
     private readonly _usuarioService: UsuarioService
   ) {
   }
+  ngOnInit() {
+    this.consoleMss(true);
+  }
 
   consoleMss(objectBon: boolean) {
     console.log('The mss is this: ', objectBon);
     const observable = this._usuarioService.traerTodo();
-    observable
+    const subGetUser = observable
       .subscribe(//then try
-        () => {
-          console.log('Inside or try');
+        (data) => {
+          this.usersArray = data as any[];
+          console.log(data);
         },
-        () => {//catch
-          console.log('Errors');
+        (error) => {//catch
+          console.log('Errors '+ error[0]);
         },
-      )
+      );
+    this.obsArray.push(subGetUser);
 
   }
 
+  createUser(){
+    const newUser = {
+      cedula: '16789345621',
+      nombre: 'Hinata',
+      correo: 'giuga@ska.com',
+      estadoCivil: 'Casado'
+    };
+    const obCreateUser = this._usuarioService
+      .crear(newUser);
+    const subscribeCreate = obCreateUser
+      .subscribe(
+        (data)=>{
+          console.log('New User', data);
+          this.consoleMss(true);
+        },
+        (error)=>{
+          console.log('Error', error);
+        }
+      );
+    this.obsArray.push(subscribeCreate);
+  }
 }
 
 
