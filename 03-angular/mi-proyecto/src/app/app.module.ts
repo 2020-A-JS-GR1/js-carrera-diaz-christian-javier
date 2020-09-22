@@ -13,6 +13,12 @@ import { RutaUsuarioComponent } from './rutas/ruta-usuario/ruta-usuario.componen
 import { RutaListaUsuarioComponent } from './rutas/ruta-lista-usuario/ruta-lista-usuario.component';
 import { RutaCrearUsuarioComponent } from './rutas/ruta-crear-usuario/ruta-crear-usuario.component';
 import { RutaEditarUsuarioComponent } from './rutas/ruta-editar-usuario/ruta-editar-usuario.component';
+import { FormularioUsuarioComponent } from './componentes/formularios/formulario-usuario/formulario-usuario.component';
+import {FormsModule} from "@angular/forms";
+import {AuthService} from "./servicios/auth/auth.service";
+import {EstaLogeadoGuard} from "./servicios/guards/esta-logeado.guard";
+import {EstaAdminGuard} from "./servicios/guards/esta-admin.guard";
+import {EstaSuperGuard} from "./servicios/guards/esta-super.guard";
 
 @NgModule({
   declarations: [//Components
@@ -24,15 +30,21 @@ import { RutaEditarUsuarioComponent } from './rutas/ruta-editar-usuario/ruta-edi
     RutaUsuarioComponent,
     RutaListaUsuarioComponent,
     RutaCrearUsuarioComponent,
-    RutaEditarUsuarioComponent
+    RutaEditarUsuarioComponent,
+    FormularioUsuarioComponent
   ],
   imports: [ //Modules
     BrowserModule, // Importa las directivas
     AppRoutingModule,
-    HttpClientModule //Importa el http client
+    HttpClientModule, //Importa el http client
+    FormsModule //TIpos de formulario
   ],
   providers: [
     UsuarioService,
+    AuthService,
+    EstaLogeadoGuard,
+    EstaAdminGuard,
+    EstaSuperGuard,
   ],
   bootstrap: [AppComponent]
 })

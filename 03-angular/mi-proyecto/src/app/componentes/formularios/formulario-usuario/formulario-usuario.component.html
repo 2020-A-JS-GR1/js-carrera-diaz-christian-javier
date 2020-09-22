@@ -1,0 +1,76 @@
+<form #formularioUsuario="ngForm"
+      (ngSubmit)="crearUsuario(formularioUsuario)">
+  <!--Si esta en parentesis es un evento-->
+  <div>
+    <label for="nombreId">Nombre:</label>
+    <input id="nombreId"
+           type="text"
+           [(ngModel)]="usuario.nombreModelo"
+           name="nombre" required
+           minlength="3"
+           #nombreCampo="ngModel"/>
+    <div *ngIf="nombreCampo.touched && nombreCampo.errors">
+      <p *ngIf="nombreCampo.errors.required">
+        Error: Campo requerido
+      </p>
+      <p *ngIf="nombreCampo.errors.minlength">
+        Error: Longitud minima de 3
+      </p>
+    </div>
+  </div>
+<!--  Validacion de campos
+      - email
+      - maxlength="10"
+      - minlength="3"
+      - type="number"
+      - Con numeros => min="0"
+      - Con numeros => max="10"
+      - pattern = "[0-9]*" expresiones regulares
+      <input type="number" step="0.1" min="0" max="2">
+      sirve el step con saltos de 0.1 hasta el 2-->
+  <div>
+    <label for="cedulaId">C&eacute;dula:</label>
+    <input id="cedulaId"
+           type="text"
+           [(ngModel)]="usuario.cedulaModelo"
+           name="cedula" required/>
+  </div>
+  <div>
+    <label for="correoId">Correo Electr&oacute;nico:</label>
+    <input id="correoId"
+           type="email"
+           [(ngModel)]="usuario.correoModelo"
+           name="correo" required/>
+  </div>
+  <div>
+    <label for="estadoCivilId">Estado Civil:</label>
+    <select id="estadoCivilId"
+           type="text"
+            name="estadoCivil"
+            [(ngModel)]="usuario.estadoCivilModelo"
+            required>
+
+      sas
+      <option value="Soltero">E.S. Soltero</option>
+      <option value="Casado">E.S. Casado</option>
+      <option value="Divorciado">E.S. Divorciado</option>
+      <option value="Viudo">E.S. Viudo</option>
+      <option value="Unión libre">E.S. Uni&oacute;n Libre</option>
+    </select>
+  </div>
+<!--  Binding de doble via
+  Ayuda a rastrear los campos del formulario-->
+  <button (click)="ayuda()" type="button">
+    Button(Ayuda)
+  </button>
+  <button type="submit"
+          [disabled]="!formularioUsuario.form.valid">
+    Submit
+  </button>
+  <button type="reset">
+    Reset
+  </button>
+  <button>
+    Defecto
+  </button>
+</form>

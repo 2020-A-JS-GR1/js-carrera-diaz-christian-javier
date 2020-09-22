@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UsuarioService} from "./servicios/http/usuario.service";
+import {AuthService} from "./servicios/auth/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -34,7 +35,8 @@ export class AppComponent
 
   //Inyectar Dependencias
   constructor(
-    private readonly _usuarioService: UsuarioService
+    private readonly _usuarioService: UsuarioService,
+    public readonly _autService : AuthService
   ) {
   }
   ngOnInit() {

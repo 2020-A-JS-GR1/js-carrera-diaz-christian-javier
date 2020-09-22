@@ -39,4 +39,11 @@ export class UsuarioService{
     );
   }
 
+  editar(usuario,id){
+    return this._httpClient.put(
+      this.url + '/Usuario/' + id,//Url
+      usuario
+    );
+  }
+
 }
