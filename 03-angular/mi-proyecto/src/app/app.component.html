@@ -49,7 +49,7 @@
       Ir Login
     </a>
   </li>
-  <li>
+  <li *ngIf="_autService.isAuthenticate">
     <a [routerLink]="['user']">
       Usuarios
     </a>

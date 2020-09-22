@@ -1,1 +1,13 @@
-<p>ruta-login works!</p>
+{{_autService.isAuthenticate}}
+<form #loginForm = "ngForm"
+      (ngSubmit)="revisarLogin(loginForm)">
+  <label for="correoId">Correo:</label>
+  <input type="text" name="correo"
+         [(ngModel)]="correoModelo" id="correoId"/>
+  <label for="cedulaId">Cedula:</label>
+  <input type="text" [(ngModel)]="cedulaModelo"
+         name="cedula" id="cedulaId"/>
+  <button>
+    Logearse
+  </button>
+</form>

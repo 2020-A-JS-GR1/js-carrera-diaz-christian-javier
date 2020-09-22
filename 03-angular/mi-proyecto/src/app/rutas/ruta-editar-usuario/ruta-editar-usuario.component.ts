@@ -9,6 +9,7 @@ import {ActivatedRoute, Params} from "@angular/router";
 })
 export class RutaEditarUsuarioComponent implements OnInit {
   usuario;
+  mostrarFormulario:boolean = true;
   constructor(//Inyectamos dependencias
     private readonly _usuarioService: UsuarioService,
     private readonly _activatedRoute: ActivatedRoute
@@ -33,6 +34,18 @@ export class RutaEditarUsuarioComponent implements OnInit {
               }
             );
         }
+      );
+  }
+
+  llenarFormularioConDatosDeUsuario(){
+    this.mostrarFormulario= true;
+  }
+  editarUsuario(usuario){
+    const obsEditarUsuario = this._usuarioService.editar(usuario,this.usuario.id);
+    obsEditarUsuario
+      .subscribe(
+        ()=>{},
+        ()=>{}
       );
   }
 
