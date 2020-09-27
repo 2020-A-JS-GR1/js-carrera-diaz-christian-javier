@@ -1,0 +1,158 @@
+<p-toast></p-toast>
+<div class="p-grid">
+  <div class="p-col-8 p-offset-2">
+    <div class="p-grid">
+      <div class="p-col-12 p-text-center">
+        <img src="/assets/img/logo.png" width="20%" alt="main-logo">
+        <h1>BIENVENIDO AL MODULO DE COMPUTADORAS</h1>
+      </div>
+    </div>
+    <div class="card">
+      <p-toolbar styleClass="p-mb-4 p-text-center">
+        <ng-template pTemplate="left">
+          <button pButton pRipple
+                  label="Nuevo Computador"
+                  icon="pi pi-plus"
+                  class="p-button-success p-mr-2"
+                  (click)="openNew()"></button>
+          <button pButton pRipple
+                  [label]="Delete"
+                  icon="pi pi-trash"
+                  class="p-button-danger"
+                  (click)="deleteSelectedsComputers()"
+                  [disabled]="!selectedComputers || !selectedComputers.length"></button>
+        </ng-template>
+      </p-toolbar>
+      <p-table #dt [value]="computers" [rows]="10"
+               [paginator]="true"
+               [globalFilterFields]="['model']"
+               [(selection)]="selectedComputers"
+               [rowHover]="true" dataKey="id"
+               currentPageReportTemplate="Mostrando {first} de {last} de las {totalRecords} existentes"
+               [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            <h5 class="p-m-0">Administrar Computadoras</h5>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="model">Modelo
+              <p-sortIcon field="model"></p-sortIcon>
+            </th>
+            <th pSortableColumn="brand">Marca
+              <p-sortIcon field="brand"></p-sortIcon>
+            </th>
+            <th pSortableColumn="price">Precio
+              <p-sortIcon field="price"></p-sortIcon>
+            </th>
+            <th pSortableColumn="isNew">¿Es Nueva?
+              <p-sortIcon field="isNew"></p-sortIcon>
+            </th>
+            <th pSortableColumn="owners">Propietario(s)
+              <p-sortIcon field="isNew"></p-sortIcon>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-computer>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="computer"></p-tableCheckbox>
+            </td>
+            <td>{{computer.model}}</td>
+            <td>{{computer.brand}}</td>
+            <td>{{computer.price | currency:"USD" }}</td>
+            <td *ngIf="computer.isNew===true">Si</td>
+            <td *ngIf="computer.isNew===false">No</td>
+            <td><span *ngFor="let user of computer.owners">
+              Propietario(s): {{user.name}} {{user.last_name}}
+            </span></td>
+            <td>
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                      (click)="editComputer(computer)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                      (click)="deleteComputer(computer)"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            En total existen {{computers ? computers.length : 0 }} computadoras.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <p-dialog [(visible)]="computerDialog"
+              [style]="{width: '450px'}"
+              header="Detalles de la Computadora" [modal]="true"
+              styleClass="p-fluid">
+      <ng-template pTemplate="content">
+        <div class="p-field">
+          <label for="model">Modelo</label>
+          <input type="text" id="model" pInputText [(ngModel)]="computer.model">
+          <small class="p-invalid"
+                 *ngIf="submitted && !computer.model">El modelo es requerido</small>
+        </div>
+        <div class="p-field">
+          <label>Marca</label>
+          <p-dropdown [options]="brandList"
+                      [(ngModel)]="brandSelected"
+                      placeholder="Seleccione una Marca"
+                      optionLabel="name"
+                      [showClear]="true"></p-dropdown>
+          <small class="p-invalid" *ngIf="submitted && !computer.brand">La marca es requerida</small>
+        </div>
+        <div class="p-field">
+          <label>Precio</label>
+          <p-inputNumber [(ngModel)]="computer.price"
+                         inpudId="locale-us"
+                         mode="decimal"
+                         locale="en-US" [minFractionDigits]="2">
+          </p-inputNumber>
+          <small class="p-invalid" *ngIf="submitted && !computer.price">El precio es requerida</small>
+        </div>
+        <div class="p-field">
+          <label class="p-mb-3">¿Es Nueva?</label>
+          <div class="p-formgrid p-grid">
+            <div class="p-field-radiobutton p-col-6">
+              <p-radioButton id="isNew_true"
+                             name="isNew" value="true"
+                             [(ngModel)]="computer.isNew"></p-radioButton>
+              <label for="isNew_true">SI</label>
+            </div>
+            <div class="p-field-radiobutton p-col-6">
+              <p-radioButton id="isNew_false"
+                             name="isNew" value="false"
+                             [(ngModel)]="computer.isNew"></p-radioButton>
+              <label for="isNew_false">NO</label>
+            </div>
+          </div>
+        </div>
+        <div class="p-field">
+          <label class="p-mb-3">Computadoras</label>
+          <p-multiSelect [options]="listUsers"
+                         [(ngModel)]="selectedUsers"
+                         defaultLabel="Seleccione un Usuario" optionLabel="name"></p-multiSelect>
+        </div>
+
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar"
+                icon="pi pi-times"
+                class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple
+                label="Guardar" icon="pi pi-check"
+                class="p-button-text" (click)="saveComputer()"></button>
+      </ng-template>
+    </p-dialog>
+
+  </div>
+  <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+</div>
