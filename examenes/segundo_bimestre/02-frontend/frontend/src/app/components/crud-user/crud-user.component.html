@@ -1,0 +1,160 @@
+<p-toast></p-toast>
+<div class="p-grid">
+  <div class="p-col-8 p-offset-2">
+    <div class="p-grid">
+      <div class="p-col-12 p-text-center">
+        <img src="/assets/img/logo.png" width="20%" alt="main-logo">
+        <h1>BIENVENIDO AL MODULO DE USUARIO</h1>
+      </div>
+    </div>
+    <div class="card">
+      <p-toolbar styleClass="p-mb-4 p-text-center">
+        <ng-template pTemplate="left">
+          <button pButton pRipple
+                  label="Nuevo Usuario"
+                  icon="pi pi-plus"
+                  class="p-button-success p-mr-2"
+                  (click)="openNew()"></button>
+          <button pButton pRipple
+                  [label]="Delete"
+                  icon="pi pi-trash"
+                  class="p-button-danger"
+                  (click)="deleteSelectedsUsers()"
+                  [disabled]="!selectedUsers || !selectedUsers.length"></button>
+        </ng-template>
+      </p-toolbar>
+      <p-table #dt [value]="users" [rows]="10"
+               [paginator]="true"
+               [globalFilterFields]="['name']"
+               [(selection)]="selectedUsers"
+               [rowHover]="true" dataKey="id"
+               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            <h5 class="p-m-0">Administrar Usuarios</h5>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="name">Nombre
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="last_name">Apellido
+              <p-sortIcon field="last_name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DNI">DNI
+              <p-sortIcon field="dni"></p-sortIcon>
+            </th>
+            <th pSortableColumn="birt_date">Fecha De Nacimiento
+              <p-sortIcon field="birt_date"></p-sortIcon>
+            </th>
+            <th pSortableColumn="isMarried">¿Esta Casado?
+              <p-sortIcon field="isMarried"></p-sortIcon>
+            </th>
+            <th pSortableColumn="computers">Computadoras
+              <p-sortIcon field="computers"></p-sortIcon>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="user"></p-tableCheckbox>
+            </td>
+            <td>{{user.name}}</td>
+            <td>{{user.last_name}}</td>
+            <td>{{user.DNI}}</td>
+            <td>{{user.birt_date.substr(0, 10) | date:'dd/MM/yyyy'}}</td>
+            <td *ngIf="user.isMarried===true">Si</td>
+            <td *ngIf="user.isMarried===false">No</td>
+            <td><span *ngFor="let computer of user.computers">
+              Computadora: {{computer.model}} {{computer.brand}} a un precio de : $ {{computer.price}}
+            </span></td>
+            <td>
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                      (click)="editUser(user)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                      (click)="deleteUser(user)"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            En total existen {{users ? users.length : 0 }} usuarios.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <p-dialog [(visible)]="userDialog"
+              [style]="{width: '450px'}"
+              header="Detalles del Usuario" [modal]="true"
+              styleClass="p-fluid">
+      <ng-template pTemplate="content">
+        <div class="p-field">
+          <label for="name">Nombre</label>
+          <input type="text" pInputText
+                 id="name" [(ngModel)]="user.name" required autofocus/>
+          <small class="p-invalid"
+                 *ngIf="submitted && !user.name">El nombre es requerido</small>
+        </div>
+        <div class="p-field">
+          <label for="name">Apellido</label>
+          <input type="text" pInputText id="last_name" [(ngModel)]="user.last_name" required autofocus/>
+          <small class="p-invalid" *ngIf="submitted && !user.last_name">El Apellido es requerido</small>
+        </div>
+        <div class="p-field">
+          <label for="name">DNI</label>
+          <input type="text" pInputText id="dni" [(ngModel)]="user.DNI" required autofocus/>
+          <small class="p-invalid" *ngIf="submitted && !user.DNI">El DNI es requerido</small>
+        </div>
+        <div class="p-field">
+          <label for="name">Fecha De Nacimiento</label>
+          <input type="date" pInputText id="birt_name" [(ngModel)]="user.birt_date" required autofocus/>
+          <small class="p-invalid" *ngIf="submitted && !user.birt_date">La fecha de nacimiento es requerida</small>
+        </div>
+        <div class="p-field">
+          <label class="p-mb-3">¿Esta Casado?</label>
+          <div class="p-formgrid p-grid">
+            <div class="p-field-radiobutton p-col-6">
+              <p-radioButton id="isMarried_true"
+                             name="isMarried" value="true"
+                             [(ngModel)]="user.isMarried"></p-radioButton>
+              <label for="isMarried_true">SI</label>
+            </div>
+            <div class="p-field-radiobutton p-col-6">
+              <p-radioButton id="isMarried_false"
+                             name="isMarried" value="false"
+                             [(ngModel)]="user.isMarried"></p-radioButton>
+              <label for="isMarried_false">NO</label>
+            </div>
+          </div>
+        </div>
+        <div class="p-field">
+          <label class="p-mb-3">Computadoras</label>
+          <p-multiSelect [options]="listComputers"
+                         [(ngModel)]="selectedComputes"
+                         defaultLabel="Seleccione una Computadora" optionLabel="model"></p-multiSelect>
+        </div>
+
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar"
+                icon="pi pi-times"
+                class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple
+                label="Guardar" icon="pi pi-check"
+                class="p-button-text" (click)="saveUser()"></button>
+      </ng-template>
+    </p-dialog>
+
+  </div>
+  <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+</div>
