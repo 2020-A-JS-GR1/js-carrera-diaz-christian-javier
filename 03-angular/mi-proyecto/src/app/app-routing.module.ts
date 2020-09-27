@@ -10,6 +10,10 @@ import {EstaLogeadoGuard} from "./servicios/guards/esta-logeado.guard";
 import {EstaAdminGuard} from "./servicios/guards/esta-admin.guard";
 import {EstaSuperGuard} from "./servicios/guards/esta-super.guard";
 
+<<<<<<< HEAD
+const routes: Routes = [];
+ijo
+=======
 const routes: Routes = [
   {
     component: RutaInicioComponent, //Component
@@ -61,6 +65,7 @@ const routes: Routes = [
   }
 ];
 
+>>>>>>> develop
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
