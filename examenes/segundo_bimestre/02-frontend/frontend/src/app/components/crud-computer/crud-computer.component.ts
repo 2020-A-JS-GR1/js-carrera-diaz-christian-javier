@@ -21,7 +21,7 @@ export class CrudComputerComponent implements OnInit {
   computerDialog: boolean;
   computers;
   computer: Computer;
-  selectedComputers: Computer[];
+  selectedComputers;
   selectedUsers: any[];
   submitted: boolean;
   isActivated: boolean = false;
@@ -167,7 +167,6 @@ export class CrudComputerComponent implements OnInit {
             detail: 'Computadora Actualizada', life: 3000
           });
         } else {
-          console.error('like', this.computer);
           this._computerService.newComputer(this.computer)
             .subscribe(
               () => {

@@ -21,7 +21,7 @@ export class CrudUserComponent implements OnInit {
   userDialog: boolean;
   users;
   user: User;
-  selectedUsers: User[];
+  selectedUsers;
   selectedComputes:any[];
   submitted: boolean;
   isActivated: boolean = false;
@@ -65,9 +65,6 @@ export class CrudUserComponent implements OnInit {
 
   deleteSelectedsUsers() {
     const isDeleted = this._userService.deleteSomeUser(this.selectedUsers);
-    const ObsDeleted = this._userService.deleteSomeUser2(this.selectedUsers);
-    ObsDeleted
-
     if (isDeleted) {
       this._confirmationService.confirm(
         {
