@@ -51,6 +51,7 @@ import {ComputerService} from "./services/computer.service";
     ConfirmDialogModule,
     RadioButtonModule,
     DialogModule,
+    InputTextModule,
     RatingModule,
     TableModule,
     ToolbarModule,

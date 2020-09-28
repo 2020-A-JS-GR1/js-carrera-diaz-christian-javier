@@ -10,16 +10,15 @@ export class ComputerService{
   ) {
   }
 
-  deleteSomeComputers(computers):boolean{
-    try {
-      for (let computer of computers){
-        this._httpclient.delete(this.url+'computer/'+computer.id);
-      }
-      return true;
-    }catch (error){
-      console.error('Error en Eliminar Las Computadoras: ',error);
-      return false;
+  deleteSomeComputers(computers) {
+    for (let i=0; i<computers.length;i++){
+      this._httpclient.delete(this.url + 'computer/' + computers[i].id)
+        .subscribe(
+          ()=>console.log('OK!'),
+          (error)=>console.error('Error found',error),
+        );
     }
+    return true;
   }
   getAllComputers(){
     return this._httpclient.get(this.url+'computer');
