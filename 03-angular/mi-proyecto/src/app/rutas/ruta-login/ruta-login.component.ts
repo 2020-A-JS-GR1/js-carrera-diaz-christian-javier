@@ -21,7 +21,6 @@ export class RutaLoginComponent implements OnInit {
     const obsLogin= this._autService.login(
       this.correoModelo, this.cedulaModelo
     );
-
     obsLogin.
       subscribe(
       (userArray:any[])=>{
